@@ -4,9 +4,14 @@ namespace ForgeOfEmpiresARealChallengeSolver
 {
     class Buildings : List<Building>
     {
-        public void Add(string name, int populationProvided)
+        public void Add(string name, int populationProvided, bool isPremium = false)
         {
-            Add(new Building() {Name = name, PopulationProvided = populationProvided});
+            Add(new Building()
+            {
+                Name = name,
+                PopulationProvided = populationProvided,
+                IsPremium = isPremium
+            });
         }
 
     }

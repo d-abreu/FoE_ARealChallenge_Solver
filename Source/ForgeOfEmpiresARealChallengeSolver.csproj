@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Building.cs" />
     <Compile Include="Buildings.cs" />
+    <Compile Include="BuildingsFactory.cs" />
     <Compile Include="BuildingWithInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solver.cs" />

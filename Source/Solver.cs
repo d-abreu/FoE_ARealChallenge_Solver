@@ -1,72 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace ForgeOfEmpiresARealChallengeSolver
 {
     internal class Solver
     {
         private readonly int _currentPopulation;
-        private Buildings _buildings;
+        private readonly Buildings _buildings;
         private const int TargetPopulation = 1997;
+        public const string NothingToBeDone = "Nothing to be done!";
+        public const string Impossible = "Impossible!";
 
-        public Solver(int currentPopulation)
+        public Solver(int currentPopulation, Buildings buildings)
         {
             _currentPopulation = currentPopulation;
-            _buildings = LoadBuildings();
-        }
-
-        private Buildings LoadBuildings()
-        {
-            var buildings = new Buildings();
-            buildings.Add("Hut", 14);
-            buildings.Add("Stilt House", 22);
-            buildings.Add("Chalet", 32);
-            buildings.Add("Thatched House", 27);
-            buildings.Add("Villa", 87);
-            buildings.Add("Roof Tile House", 44);
-            buildings.Add("Cottage", 73);
-            buildings.Add("Frame House", 67);
-            buildings.Add("Multistory House", 89);
-            buildings.Add("Clapboard House", 111);
-            buildings.Add("Mansion", 188);
-            buildings.Add("Brownstone House", 94);
-            buildings.Add("Town House", 156);
-            buildings.Add("Manor", 246);
-            buildings.Add("Estate House", 123);
-            buildings.Add("Apartment House", 205);
-            buildings.Add("Plantation House", 311);
-            buildings.Add("Arcade House", 155);
-            buildings.Add("Country House", 207);
-            buildings.Add("Gambrel Roof House", 259);
-            buildings.Add("Urban Residence", 569);
-            buildings.Add("Workers House", 285);
-            buildings.Add("Boarding House", 380);
-            buildings.Add("Victorian House", 474);
-            return buildings;
+            _buildings = buildings;
         }
 
         public string Solve()
         {
-            var solution = string.Empty;
+            StringBuilder sb = new StringBuilder();
             if (_currentPopulation == TargetPopulation)
-                return solution;
+                return NothingToBeDone;
 
-            int i = 0;
             foreach (var building in _buildings.OrderByDescending(r => r.PopulationProvided))
             {
                 var tmpRes = SolveInternal(building);
                 var sum = tmpRes.Sum(r => r.PopulationProvided) + _currentPopulation;
-                var res = sum == TargetPopulation ? "succeded" : "failed";
-                Console.WriteLine($"{i++}: Tried for {sum} and {res}");
-                if (res == "succeded")
+                if (sum == TargetPopulation)
                 {
                     var strs = tmpRes.GroupBy(r => r.Name).Select(r => $"{r.Count()}x {r.Key}").ToList();
-                    Console.WriteLine("With: "+ strs.Aggregate((a,b) => a + " | " + b));
-                    solution = "Found!";
+                    sb.AppendLine(strs.Aggregate((a, b) => a + " | " + b));
                 }
             }
-            return solution;
+            var ret = sb.ToString();
+            Console.WriteLine(ret);
+            return ret;
         }
 
         private List<BuildingWithInfo> SolveInternal(Building startSearchAt)
@@ -97,7 +68,6 @@ namespace ForgeOfEmpiresARealChallengeSolver
             } while (shouldContinue);
             return solution;
         }
-
 
         private bool TryGetNext(Building lastTryAdded,int seed, out Building next)
         {

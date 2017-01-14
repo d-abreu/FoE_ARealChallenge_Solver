@@ -10,16 +10,16 @@ namespace ForgeOfEmpiresARealChallengeSolver
         [Test]
         public void GivenPopulationIsAlready1997_WhenSolvingFor1997_ThenReturnEmpty()
         {
-            var solver = new Solver(1997);
+            var solver = new Solver(1997, BuildingsFactory.GetAllBuildings());
             var ret = solver.Solve();
 
-            Assert.AreEqual(string.Empty, ret);
+            Assert.AreEqual(Solver.NothingToBeDone, ret);
         }
 
         [Test]
         public void GivenPopulationIs1000_WhenSolvingFor1997_ThenFindSolutions()
         {
-            var solver = new Solver(1000);
+            var solver = new Solver(1000, BuildingsFactory.GetAllNonPremiumBuildings());
             var ret = solver.Solve();
 
             Assert.IsFalse(ret == string.Empty);
