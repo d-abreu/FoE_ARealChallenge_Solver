@@ -31,13 +31,21 @@ namespace ForgeOfEmpiresARealChallengeSolver
                 var sum = tmpRes.Sum(r => r.PopulationProvided) + _currentPopulation;
                 if (sum == TargetPopulation)
                 {
-                    var strs = tmpRes.GroupBy(r => r.Name).Select(r => $"{r.Count()}x {r.Key}").ToList();
-                    sb.AppendLine(strs.Aggregate((a, b) => a + " | " + b));
+                    var strs = tmpRes
+                        .GroupBy(r => r.Name)
+                        .Select(r => $"{r.Count()}x {r.Key}")
+                        .Aggregate((a, b) => a + " | " + b);
+
+                    if(!sb.ToString().Contains(strs))
+                        sb.AppendLine(strs);
                 }
             }
+            if (sb.Length == 0)
+                sb.Append(Impossible);
+
             var ret = sb.ToString();
             Console.WriteLine(ret);
-            return ret;
+            return ret.Trim();
         }
 
         private List<BuildingWithInfo> SolveInternal(Building startSearchAt)
